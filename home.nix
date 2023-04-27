@@ -1,6 +1,8 @@
 { config, pkgs, lib, ... }:
 
 {
+  targets.genericLinux.enable = true;
+
   home.username = "simon";
   home.homeDirectory = "/var/home/simon";
 
@@ -20,6 +22,8 @@
   home.sessionVariables = {
     EDITOR = "nano";
   };
+
+  xdg.enable = true;
 
   programs.home-manager.enable = true;
 
@@ -51,6 +55,7 @@
         file = "p10k.zsh";
       }
     ];
+
     oh-my-zsh = {
       enable = false;
     };
