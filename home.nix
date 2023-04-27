@@ -68,4 +68,20 @@
   programs.bat = {
     enable = true;
   };
+
+  gtk = {
+    enable = true;
+    # font = {
+    #   name = "mononoki Nerd Font";
+    #   package = null;
+    #   size = 12;
+    # };
+    theme = {
+      name = "Catppuccin-Macchiato-Standard-Red-Dark";
+      package = pkgs.catppuccin-gtk.override {
+        accents = [ "red" ];
+        variant = "macchiato";
+      };
+    };
+  };
 }
