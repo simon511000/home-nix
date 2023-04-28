@@ -1,5 +1,13 @@
 { config, pkgs, lib, ... }:
 
+let
+  catppuccin = pkgs.catppuccin-gtk.override {
+    accents = [ "green" ];
+    size = "standard";
+    tweaks = [ "normal" ];
+    variant = "macchiato";
+  };
+in
 {
   targets.genericLinux.enable = true;
 
@@ -18,6 +26,13 @@
 
   home.file = {
     ".config/autostart/autostart-guake.desktop".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.nix-profile/share/guake/autostart-guake.desktop";
+
+    ".config/gtk-4.0/gtk.css".source = "${catppuccin}/share/themes/Catppuccin-Macchiato-Standard-Red-Dark/gtk-4.0/gtk.css";
+    ".config/gtk-4.0/gtk-dark.css".source = "${catppuccin}/share/themes/Catppuccin-Macchiato-Standard-Red-Dark/gtk-4.0/gtk-dark.css";
+    ".config/gtk-4.0/assets" = {
+      recursive = true;
+      source = "${catppuccin}/share/themes/Catppuccin-Macchiato-Standard-Red-Dark/gtk-4.0/assets";
+    };
   };
 
   home.sessionVariables = {
@@ -73,17 +88,13 @@
 
   gtk = {
     enable = true;
-    # font = {
-    #   name = "mononoki Nerd Font";
-    #   package = null;
-    #   size = 12;
-    # };
+    iconTheme = {
+      name = "Papirus-Dark";
+      package = pkgs.papirus-icon-theme;
+    };
     theme = {
       name = "Catppuccin-Macchiato-Standard-Red-Dark";
-      package = pkgs.catppuccin-gtk.override {
-        accents = [ "red" ];
-        variant = "macchiato";
-      };
+      package = catppuccin;
     };
   };
 }
