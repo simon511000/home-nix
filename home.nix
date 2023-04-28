@@ -13,6 +13,7 @@
     guake
     btop
     zsh-powerlevel10k
+    exa
   ];
 
   home.file = {
@@ -37,6 +38,7 @@
     enable = true;
     shellAliases = {
       cat = "bat";
+      ls = "exa -lah --group-directories-first";
     };
     
     enableAutosuggestions = true;
