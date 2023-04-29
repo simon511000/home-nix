@@ -2,7 +2,7 @@
 
 let
   catppuccin = pkgs.catppuccin-gtk.override {
-    accents = [ "green" ];
+    accents = [ "red" ];
     size = "standard";
     tweaks = [ "normal" ];
     variant = "macchiato";
