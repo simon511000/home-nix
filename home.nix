@@ -35,6 +35,14 @@ in
     };
   };
 
+  home.pointerCursor = {
+    name = "Bibata-Modern-Ice";
+    package = pkgs.bibata-cursors;
+    size = 16;
+    gtk.enable = true;
+    x11.enable = true;
+  };
+
   home.sessionVariables = {
     EDITOR = "nano";
   };
