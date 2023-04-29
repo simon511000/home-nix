@@ -28,6 +28,7 @@ in
     btop
     zsh-powerlevel10k
     exa
+    mononoki (nerdfonts.override { fonts = [ "Ubuntu" ]; })
   ];
 
   home.file = {
@@ -104,6 +105,11 @@ in
 
   gtk = {
     enable = true;
+    font = {
+      name = "ubuntu Nerd Font";
+      package = null;
+      size = 12;
+    };
     iconTheme = {
       name = "Papirus-Dark";
       package = pkgs.papirus-icon-theme;
