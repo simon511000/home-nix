@@ -28,7 +28,8 @@ in
     btop
     zsh-powerlevel10k
     exa
-    mononoki (nerdfonts.override { fonts = [ "Ubuntu" ]; })
+    # mononoki (nerdfonts.override { fonts = [ "Ubuntu" ]; })
+    bibata-cursors
   ];
 
   home.file = {
@@ -70,6 +71,12 @@ in
       cat = "bat";
       ls = "exa -lah --group-directories-first";
     };
+
+    initExtra = ''
+      bindkey  "^[[H"   beginning-of-line
+      bindkey  "^[[F"   end-of-line
+      bindkey  "^[[3~"  delete-char
+    '';
     
     enableAutosuggestions = true;
     enableCompletion = true;
@@ -105,11 +112,11 @@ in
 
   gtk = {
     enable = true;
-    font = {
-      name = "ubuntu Nerd Font";
-      package = null;
-      size = 12;
-    };
+    # font = {
+    #   name = "ubuntu Nerd Font";
+    #   package = null;
+    #   size = 12;
+    # };
     iconTheme = {
       name = "Papirus-Dark";
       package = pkgs.papirus-icon-theme;
