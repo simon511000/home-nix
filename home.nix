@@ -30,6 +30,12 @@ in
     exa
     # mononoki (nerdfonts.override { fonts = [ "Ubuntu" ]; })
     bibata-cursors
+    veracrypt
+    gparted
+    aria2
+    ngrok
+    nmap
+    xclip
   ];
 
   home.file = {
@@ -51,10 +57,6 @@ in
     x11.enable = true;
   };
 
-  home.sessionVariables = {
-    EDITOR = "nano";
-  };
-
   xdg.enable = true;
 
   programs.home-manager.enable = true;
@@ -63,6 +65,43 @@ in
     enable = true;
     userName = "Simon Ledoux";
     userEmail = "simon@simon511000.fr";
+  };
+
+  programs.neovim = {
+    enable = true;
+    defaultEditor = true;
+    viAlias = true;
+    vimAlias = true;
+    vimdiffAlias = true;
+    plugins = with pkgs.vimPlugins; [
+	nvim-lspconfig
+	catppuccin-nvim
+	
+	nvim-cmp
+	nvim-tree-lua
+    ];
+    extraConfig = ''
+      lua <<EOF
+        require('lspconfig').rnix.setup{}
+        require('lspconfig').tsserver.setup{}
+
+        require('cmp').setup({
+          
+        })
+        require('nvim-tree').setup()
+
+        require('catppuccin').setup({
+         flavour = 'macchiato',
+        })
+
+        vim.cmd.colorscheme 'catppuccin'
+        vim.wo.relativenumber = true
+      EOF
+    '';
+    extraPackages = with pkgs; [
+      rnix-lsp
+      nodePackages.typescript-language-server
+    ];
   };
 
   programs.zsh = {
@@ -80,6 +119,8 @@ in
       bindkey "^[[1;5D" backward-word
       bindkey "^[[3;5~" kill-word
       bindkey   "^H"    backward-kill-word
+      
+      export PATH="/var/home/simon/.local/bin/:$PATH"
     '';
     
     enableAutosuggestions = true;
