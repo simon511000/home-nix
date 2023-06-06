@@ -28,14 +28,12 @@ in
     btop
     zsh-powerlevel10k
     exa
-    # mononoki (nerdfonts.override { fonts = [ "Ubuntu" ]; })
     bibata-cursors
-    veracrypt
-    gparted
     aria2
     ngrok
     nmap
     xclip
+    cascadia-code
   ];
 
   home.file = {
@@ -74,33 +72,30 @@ in
     vimAlias = true;
     vimdiffAlias = true;
     plugins = with pkgs.vimPlugins; [
-	nvim-lspconfig
-	catppuccin-nvim
-	
-	nvim-cmp
-	nvim-tree-lua
+      # LSP
+      nvim-lspconfig
+
+      # Completion
+      nvim-cmp
+      cmp-nvim-lsp
+
+      # Theme
+      catppuccin-nvim
+
+      # Snippets
+      luasnip
+      cmp_luasnip
+
+      # Tree
+      nvim-tree-lua
+      
     ];
-    extraConfig = ''
-      lua <<EOF
-        require('lspconfig').rnix.setup{}
-        require('lspconfig').tsserver.setup{}
-
-        require('cmp').setup({
-          
-        })
-        require('nvim-tree').setup()
-
-        require('catppuccin').setup({
-         flavour = 'macchiato',
-        })
-
-        vim.cmd.colorscheme 'catppuccin'
-        vim.wo.relativenumber = true
-      EOF
-    '';
+    extraLuaConfig = builtins.readFile ./nvim/config.lua;
     extraPackages = with pkgs; [
+      # LSP
       rnix-lsp
       nodePackages.typescript-language-server
+      lua-language-server
     ];
   };
 
@@ -121,6 +116,7 @@ in
       bindkey   "^H"    backward-kill-word
       
       export PATH="/var/home/simon/.local/bin/:$PATH"
+      
     '';
     
     enableAutosuggestions = true;
