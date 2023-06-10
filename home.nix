@@ -67,8 +67,6 @@ in
     enable = true;
     userName = "Simon Ledoux";
     userEmail = "simon@simon511000.fr";
-    signing.key = "AA234227D561C10E";
-    signing.signByDefault = true;
   };
 
   programs.neovim = {
@@ -177,4 +175,5 @@ in
   programs.helix = {
     enable = true;
   };
+  
 }
