@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, hyprgrass, ... }:
 
 let
   catppuccin = pkgs.catppuccin-gtk.override {
@@ -7,13 +7,8 @@ let
     tweaks = [ "normal" ];
     variant = "macchiato";
   };
-  catppuccin-bat = pkgs.fetchFromGitHub {
-    owner = "catppuccin";
-    repo = "bat";
-    rev = "ba4d16880d63e656acced2b7d4e034e4a93f74b1";
-    sha256 = "6WVKQErGdaqb++oaXnY3i6/GuH2FhTgK0v4TN4Y0Wbw=";
-  };
-  lsp = (import ./lsp.nix) { pkgs = pkgs; };
+  lsp = (import ./lsp.nix) { inherit pkgs; };
+  hyprland = (import ./hyprland.nix) { inherit pkgs; inherit hyprgrass; };
 in
 {
   targets.genericLinux.enable = true;
@@ -24,20 +19,23 @@ in
   home.stateVersion = "22.11";
 
   home.packages = with pkgs; [
-    neofetch
-    guake
-    btop
-    zsh-powerlevel10k
-    exa
-    bibata-cursors
     aria2
+    bibata-cursors
+    btop
+    cascadia-code
+    csvkit
+    devbox
+    eza
+    fastfetch 
+    guake
+    hping
+    lolcat
     ngrok
     nmap
+    veracrypt
     xclip
-    cascadia-code
-    lolcat
-    devbox
-    hping
+    yq
+    zsh-powerlevel10k
   ] ++ lsp;
 
   home.file = {
@@ -108,6 +106,7 @@ in
     shellAliases = {
       cat = "bat";
       ls = "exa -lah --group-directories-first";
+      neofetch = "fastfetch";
     };
 
     initExtra = ''
@@ -125,7 +124,7 @@ in
     
     enableAutosuggestions = true;
     enableCompletion = true;
-    enableSyntaxHighlighting = true;
+    syntaxHighlighting.enable = true;
     
     plugins = [
       {
@@ -151,7 +150,17 @@ in
 
   programs.bat = {
     enable = true;
-    themes.Catppuccin-macchiato = builtins.readFile "${catppuccin-bat}/Catppuccin-macchiato.tmTheme";
+    themes = {
+      Catppuccin-macchiato = {
+        src = pkgs.fetchFromGitHub {
+          owner = "catppuccin";
+          repo = "bat";
+          rev = "ba4d16880d63e656acced2b7d4e034e4a93f74b1";
+          sha256 = "6WVKQErGdaqb++oaXnY3i6/GuH2FhTgK0v4TN4Y0Wbw=";
+        };
+        file = "Catppuccin-macchiato.tmTheme";
+      };
+    };
     config.theme = "Catppuccin-macchiato";
   };
 
@@ -175,5 +184,6 @@ in
   programs.helix = {
     enable = true;
   };
-  
+
+  wayland.windowManager.hyprland = hyprland;
 }
