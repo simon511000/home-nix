@@ -1,4 +1,4 @@
-{ config, pkgs, lib, hyprgrass, ... }:
+{ config, pkgs, ... }:
 
 let
   catppuccin = pkgs.catppuccin-gtk.override {
@@ -8,7 +8,6 @@ let
     variant = "macchiato";
   };
   lsp = (import ./lsp.nix) { inherit pkgs; };
-  hyprland = (import ./hyprland.nix) { inherit pkgs; inherit hyprgrass; };
 in
 {
   targets.genericLinux.enable = true;
@@ -19,21 +18,11 @@ in
   home.stateVersion = "22.11";
 
   home.packages = with pkgs; [
-    aria2
-    bibata-cursors
     btop
-    cascadia-code
-    csvkit
-    devbox
     eza
     fastfetch 
     guake
-    hping
-    lolcat
-    ngrok
-    nmap
     veracrypt
-    xclip
     yq
     zsh-powerlevel10k
   ] ++ lsp;
@@ -49,14 +38,6 @@ in
     };
   };
 
-  home.pointerCursor = {
-    name = "Bibata-Modern-Ice";
-    package = pkgs.bibata-cursors;
-    size = 16;
-    gtk.enable = true;
-    x11.enable = true;
-  };
-
   xdg.enable = true;
 
   programs.home-manager.enable = true;
@@ -65,83 +46,6 @@ in
     enable = true;
     userName = "Simon Ledoux";
     userEmail = "simon@simon511000.fr";
-  };
-
-  programs.neovim = {
-    enable = true;
-    defaultEditor = true;
-    viAlias = true;
-    vimAlias = true;
-    vimdiffAlias = true;
-    plugins = with pkgs.vimPlugins; [
-      # LSP
-      nvim-lspconfig
-
-      # Completion
-      nvim-cmp
-      cmp-nvim-lsp
-
-      # Theme
-      catppuccin-nvim
-
-      # Snippets
-      luasnip
-      cmp_luasnip
-
-      # Tree
-      nvim-tree-lua
-      
-    ];
-    extraLuaConfig = builtins.readFile ./nvim/config.lua;
-    extraPackages = with pkgs; [
-      # LSP
-      rnix-lsp
-      nodePackages.typescript-language-server
-      lua-language-server
-    ];
-  };
-
-  programs.zsh = {
-    enable = true;
-    shellAliases = {
-      cat = "bat";
-      ls = "exa -lah --group-directories-first";
-      neofetch = "fastfetch";
-    };
-
-    initExtra = ''
-      bindkey  "^[[H"   beginning-of-line
-      bindkey  "^[[F"   end-of-line
-      bindkey  "^[[3~"  delete-char
-      bindkey "^[[1;5C" forward-word
-      bindkey "^[[1;5D" backward-word
-      bindkey "^[[3;5~" kill-word
-      bindkey   "^H"    backward-kill-word
-      
-      export PATH="/var/home/simon/.local/bin/:$PATH"
-      
-    '';
-    
-    enableAutosuggestions = true;
-    enableCompletion = true;
-    syntaxHighlighting.enable = true;
-    
-    plugins = [
-      {
-        name = "powerlevel10k";
-        src = pkgs.zsh-powerlevel10k;
-        file = "share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
-      }
-      {
-        name = "powerlevel10k-config";
-        src = lib.cleanSource ./p10k-config;
-        file = "p10k.zsh";
-      }
-    ];
-
-    oh-my-zsh = {
-      enable = false;
-    };
   };
 
   programs.vscode = {
@@ -184,6 +88,4 @@ in
   programs.helix = {
     enable = true;
   };
-
-  wayland.windowManager.hyprland = hyprland;
 }

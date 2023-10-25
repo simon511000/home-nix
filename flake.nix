@@ -9,16 +9,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    hyprland.url = "github:hyprwm/Hyprland/424c9a7e704590db5c823557e5e388e366f7b1cd";
-    hyprgrass = {
-      url = "github:horriblename/hyprgrass/02e16882e321a794edf827d59b11fd9dd4d0ea28";
-      inputs.hyprland.follows = "hyprland";
-    };
-
     spicetify-nix.url = "github:the-argus/spicetify-nix";
   };
 
-  outputs = { nixpkgs, home-manager, hyprland, ... } @ inputs:
+  outputs = { nixpkgs, home-manager, ... } @ inputs:
     let
       pkgs = import nixpkgs {
         system = "x86_64-linux";
@@ -31,10 +25,10 @@
         # Specify your home configuration modules here, for example,
         # the path to your home.nix.
         modules = [
-          hyprland.homeManagerModules.default
           ./home.nix
+          ./neovim.nix
           ./spicetify.nix
-          ./spicetify.nix
+          ./zsh.nix
         ];
 
         # Optionally use extraSpecialArgs
